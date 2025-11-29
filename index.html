@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Sumas con Numberblocks</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Comic Sans MS", cursive, sans-serif;
+            }
+
+            body {
+                background: linear-gradient(135deg, #6bcaff, #ff6be1);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+                overflow-x: hidden;
+            }
+
+            .numberblock-label {
+                display: none;
+            }
+
+            .container {
+                max-width: 900px;
+                width: 100%;
+                text-align: center;
+                background-color: rgba(255, 255, 255, 0.95);
+                padding: 30px;
+                border-radius: 25px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+
+            h1 {
+                color: #ff3399;
+                text-shadow: 3px 3px 0 #ffcc00;
+                font-size: 3rem;
+                margin-bottom: 10px;
+            }
+
+            .author {
+                color: #666;
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+            }
+
+            .numbers-display {
+                margin: 30px auto;
+                width: 90%;
+                min-height: 200px;
+                border-radius: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: #fff;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+                animation: pulse 2s infinite;
+                padding: 20px;
+            }
+
+            .numbers {
+                font-size: 6rem;
+                font-weight: bold;
+                color: #ff3399;
+                text-shadow: 3px 3px 0 #ffcc00;
+                margin-bottom: 20px;
+            }
+
+            .numberblocks-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 20px;
+                margin-top: 20px;
+                width: 100%;
+            }
+
+            .numberblock {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                transition: transform 0.3s;
+            }
+
+            .numberblock:hover {
+                transform: scale(1.05);
+            }
+
+            .numberblock-img {
+                width: 120px;
+                height: auto;
+                filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+            }
+
+            .plus-sign,
+            .equals-sign {
+                font-size: 4rem;
+                color: #ff3399;
+                margin: 0 20px;
+                align-self: center;
+                font-weight: bold;
+            }
+
+            .input-container {
+                margin: 30px 0;
+            }
+
+            input {
+                width: 80%;
+                max-width: 400px;
+                padding: 20px;
+                font-size: 2rem;
+                border: 5px solid #ff3399;
+                border-radius: 20px;
+                text-align: center;
+                outline: none;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s;
+            }
+
+            input:focus {
+                border-color: #ffcc00;
+                box-shadow: 0 5px 20px rgba(255, 204, 0, 0.5);
+            }
+
+            .response {
+                font-size: 2rem;
+                margin-top: 20px;
+                min-height: 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                border-radius: 15px;
+                transition: all 0.3s ease;
+            }
+
+            .success {
+                color: #2ecc71;
+                background-color: rgba(46, 204, 113, 0.2);
+                animation: bounce 0.5s;
+            }
+
+            .fail {
+                color: #e74c3c;
+                background-color: rgba(231, 76, 60, 0.2);
+            }
+
+            .instructions {
+                background-color: rgba(255, 255, 255, 0.8);
+                padding: 15px;
+                border-radius: 15px;
+                margin-top: 20px;
+                max-width: 500px;
+                font-size: 1.2rem;
+                color: #333;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                line-height: 1.5;
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.02);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+
+            @keyframes bounce {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-10px);
+                }
+            }
+
+            .confetti {
+                position: fixed;
+                width: 10px;
+                height: 10px;
+                background-color: #f00;
+                opacity: 0.7;
+                animation: fall linear forwards;
+            }
+
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+
+            .numberblock-label {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #333;
+                margin-top: 10px;
+                background-color: rgba(255, 255, 255, 0.7);
+                padding: 5px 10px;
+                border-radius: 10px;
+            }
+
+            /* Estilos para el modal */
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.5s ease-out;
+            }
+
+            .modal-content {
+                background: linear-gradient(135deg, #ff6be1, #6bcaff);
+                padding: 40px;
+                border-radius: 30px;
+                text-align: center;
+                max-width: 600px;
+                width: 90%;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+                animation: scaleIn 0.5s ease-out;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .modal-content::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(
+                    45deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.1),
+                    transparent
+                );
+                transform: rotate(45deg);
+                animation: shine 3s infinite;
+            }
+
+            .modal-title {
+                font-size: 3.5rem;
+                color: white;
+                text-shadow: 4px 4px 0 #ff3399, 8px 8px 0 rgba(0, 0, 0, 0.2);
+                margin-bottom: 20px;
+                position: relative;
+                z-index: 1;
+            }
+
+            .modal-subtitle {
+                font-size: 1.8rem;
+                color: #fff;
+                margin-bottom: 30px;
+                text-shadow: 2px 2px 0 #ff3399;
+                position: relative;
+                z-index: 1;
+            }
+
+            .modal-instructions {
+                background: rgba(255, 255, 255, 0.9);
+                padding: 20px;
+                border-radius: 20px;
+                margin-bottom: 30px;
+                font-size: 1.3rem;
+                line-height: 1.6;
+                color: #333;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+                position: relative;
+                z-index: 1;
+            }
+
+            .start-button {
+                background: linear-gradient(135deg, #ff3399, #ffcc00);
+                color: white;
+                border: none;
+                padding: 20px 50px;
+                font-size: 2rem;
+                border-radius: 50px;
+                cursor: pointer;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                transition: all 0.3s;
+                position: relative;
+                z-index: 1;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+            }
+
+            .start-button:hover {
+                transform: scale(1.1);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            }
+
+            .start-button:active {
+                transform: scale(0.95);
+            }
+
+            .numberblocks-preview {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 20px 0;
+                position: relative;
+                z-index: 1;
+            }
+
+            .preview-block {
+                width: 80px;
+                height: auto;
+                margin: 0 10px;
+                filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes scaleIn {
+                from {
+                    transform: scale(0.8);
+                    opacity: 0;
+                }
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes shine {
+                0% {
+                    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                }
+                100% {
+                    transform: translateX(100%) translateY(100%) rotate(45deg);
+                }
+            }
+
+            @media (max-width: 768px) {
+                .numberblock-img {
+                    width: 80px;
+                }
+
+                .plus-sign,
+                .equals-sign {
+                    font-size: 2.5rem;
+                    margin: 0 10px;
+                }
+
+                .numbers {
+                    font-size: 4rem;
+                }
+
+                h1 {
+                    font-size: 2.5rem;
+                }
+
+                .modal-title {
+                    font-size: 2.5rem;
+                }
+
+                .modal-subtitle {
+                    font-size: 1.4rem;
+                }
+
+                .start-button {
+                    padding: 15px 30px;
+                    font-size: 1.5rem;
+                }
+
+                .preview-block {
+                    width: 60px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Modal de inicio -->
+        <div class="modal-overlay" id="startModal">
+            <div class="modal-content">
+                <h2 class="modal-title">¡Sumas con Numberblocks!</h2>
+                <p class="modal-subtitle">Por Valeria y Mateo</p>
+
+                <div class="numberblocks-preview">
+                    <img
+                        src="numimages/5.png"
+                        alt="Numberblock 5"
+                        class="preview-block"
+                    />
+                    <span style="font-size: 3rem; color: white; margin: 0 15px"
+                        >+</span
+                    >
+                    <img
+                        src="numimages/3.png"
+                        alt="Numberblock 3"
+                        class="preview-block"
+                    />
+                    <span style="font-size: 3rem; color: white; margin: 0 15px"
+                        >=</span
+                    >
+                    <img
+                        src="numimages/8.png"
+                        alt="Numberblock 8"
+                        class="preview-block"
+                    />
+                </div>
+
+                <div class="modal-instructions">
+                    <p>🎮 <strong>¿Cómo jugar?</strong></p>
+                    <p>1. Escucha la operación matemática</p>
+                    <p>2. Escribe la respuesta en el cuadro</p>
+                    <p>3. Presiona ENTER para comprobar</p>
+                    <p>4. ¡Diviértete aprendiendo!</p>
+                </div>
+
+                <button class="start-button" id="startGameButton">
+                    🚀 ¡Comenzar Juego! 🚀
+                </button>
+            </div>
+        </div>
+
+        <div class="container hidden" id="gameContainer">
+            <h1>¡Sumas con Numberblocks!</h1>
+            <p class="author">Por Valeria y Mateo</p>
+
+            <div class="numbers-display">
+                <div class="numbers" id="numeros"></div>
+                <div
+                    class="numberblocks-container"
+                    id="numberblocksContainer"
+                ></div>
+            </div>
+
+            <div class="input-container">
+                <input
+                    type="number"
+                    id="inputRespuesta"
+                    placeholder="Tu respuesta"
+                    autofocus
+                />
+            </div>
+
+            <div class="response" id="respuesta"></div>
+        </div>
+
+        <script>
+            var respuestaCorrecta;
+            var num1, num2;
+
+            // Función para reproducir audio y devolver una promesa
+            function playAudio(filename) {
+                return new Promise((resolve, reject) => {
+                    const audio = new Audio(`audio/${filename}`);
+
+                    audio.addEventListener("ended", () => {
+                        resolve();
+                    });
+
+                    audio.addEventListener("error", (e) => {
+                        console.log("Error reproduciendo audio:", e);
+                        reject(e);
+                    });
+
+                    audio.play().catch((e) => {
+                        console.log("Error reproduciendo audio:", e);
+                        reject(e);
+                    });
+                });
+            }
+
+            // Función para reproducir la operación con voz
+            async function playOperation() {
+                try {
+                    // Reproducir el primer número
+                    await playAudio(`${num1}.wav`);
+
+                    // Reproducir "mas"
+                    await playAudio("mas.wav");
+
+                    // Reproducir el segundo número
+                    await playAudio(`${num2}.wav`);
+
+                    // Reproducir "igual"
+                    await playAudio("igual.wav");
+                } catch (error) {
+                    console.log("Error en la secuencia de audio:", error);
+                }
+            }
+
+            function generarNumeros() {
+                num1 = Math.floor(Math.random() * 9) + 2;
+                num2 = Math.floor(Math.random() * 9) + 2;
+                respuestaCorrecta = num1 + num2;
+
+                console.log(
+                    "Números generados:",
+                    num1,
+                    "+",
+                    num2,
+                    "=",
+                    respuestaCorrecta
+                );
+
+                document.getElementById("numeros").innerHTML =
+                    num1 + " + " + num2 + " = ";
+
+                // Generar Numberblocks visuales
+                generarNumberblocks(num1, num2);
+
+                // Reproducir la operación con voz
+                playOperation();
+            }
+
+            function generarNumberblocks(num1, num2) {
+                const numberblocksContainer = document.getElementById(
+                    "numberblocksContainer"
+                );
+                numberblocksContainer.innerHTML = "";
+
+                // Crear primer Numberblock
+                const numberblock1 = document.createElement("div");
+                numberblock1.className = "numberblock";
+                numberblock1.appendChild(crearNumberblockImg(num1));
+                numberblocksContainer.appendChild(numberblock1);
+
+                // Añadir símbolo de suma
+                const plus = document.createElement("div");
+                plus.className = "plus-sign";
+                plus.textContent = "+";
+                numberblocksContainer.appendChild(plus);
+
+                // Crear segundo Numberblock
+                const numberblock2 = document.createElement("div");
+                numberblock2.className = "numberblock";
+                numberblock2.appendChild(crearNumberblockImg(num2));
+                numberblocksContainer.appendChild(numberblock2);
+            }
+
+            function crearNumberblockImg(num) {
+                const container = document.createElement("div");
+
+                const img = document.createElement("img");
+                img.className = "numberblock-img";
+                img.src = `numimages/${num}.png`;
+                img.alt = `Numberblock ${num}`;
+
+                const label = document.createElement("div");
+                label.className = "numberblock-label";
+                label.textContent = num;
+
+                container.appendChild(img);
+                container.appendChild(label);
+
+                return container;
+            }
+
+            function comprobarRespuesta(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Prevenir comportamiento por defecto
+                    event.stopPropagation(); // Evitar que el evento se propague
+
+                    var inputElement =
+                        document.getElementById("inputRespuesta");
+                    var respuestaUsuario = parseInt(inputElement.value);
+                    var respuestaElement = document.getElementById("respuesta");
+
+                    console.log(
+                        "Respuesta usuario:",
+                        respuestaUsuario,
+                        "Correcta:",
+                        respuestaCorrecta
+                    );
+
+                    // Verificar si la respuesta es un número válido
+                    if (isNaN(respuestaUsuario)) {
+                        respuestaElement.innerHTML =
+                            "Por favor, escribe un número";
+                        respuestaElement.className = "response fail";
+                        playAudio("error.wav");
+                        inputElement.value = "";
+                        return;
+                    }
+
+                    if (respuestaUsuario === respuestaCorrecta) {
+                        respuestaElement.innerHTML =
+                            "¡Correcto! ¡Eres un genio de las matemáticas!";
+                        respuestaElement.className = "response success";
+
+                        // Reproducir audio de éxito
+                        playAudio("ok.wav");
+
+                        createConfetti();
+
+                        setTimeout(function () {
+                            reiniciarJuego();
+                        }, 2000);
+                    } else {
+                        respuestaElement.innerHTML =
+                            "Respuesta incorrecta. Inténtalo de nuevo.";
+                        respuestaElement.className = "response fail";
+
+                        // Reproducir audio de error
+                        playAudio("error.wav");
+                    }
+                    inputElement.value = "";
+                }
+            }
+
+            function reiniciarJuego() {
+                document.getElementById("respuesta").innerHTML = "";
+                document.getElementById("respuesta").className = "response";
+                generarNumeros();
+                document.getElementById("inputRespuesta").focus();
+            }
+
+            // Función para crear confeti
+            function createConfetti() {
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement("div");
+                    confetti.className = "confetti";
+
+                    // Posición aleatoria
+                    const left = Math.random() * 100;
+                    confetti.style.left = left + "vw";
+
+                    // Tamaño aleatorio
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = size + "px";
+                    confetti.style.height = size + "px";
+
+                    // Color aleatorio
+                    const colors = [
+                        "#ff0000",
+                        "#00ff00",
+                        "#0000ff",
+                        "#ffff00",
+                        "#ff00ff",
+                        "#00ffff",
+                    ];
+                    const color =
+                        colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.backgroundColor = color;
+
+                    // Duración aleatoria
+                    const duration = Math.random() * 3 + 2;
+                    confetti.style.animationDuration = duration + "s";
+
+                    document.body.appendChild(confetti);
+
+                    // Eliminar el confeti después de que termine la animación
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, duration * 1000);
+                }
+            }
+
+            // Función para mantener el foco en el input
+            function mantenerFoco() {
+                const inputElement = document.getElementById("inputRespuesta");
+                // Usamos setTimeout para evitar conflictos con otros eventos
+                setTimeout(() => {
+                    inputElement.focus();
+                }, 10);
+            }
+
+            // Función para iniciar el juego
+            function iniciarJuego() {
+                document.getElementById("startModal").classList.add("hidden");
+                document
+                    .getElementById("gameContainer")
+                    .classList.remove("hidden");
+                generarNumeros();
+                document.getElementById("inputRespuesta").focus();
+            }
+
+            window.onload = function () {
+                // Configurar el botón de inicio
+                document
+                    .getElementById("startGameButton")
+                    .addEventListener("click", iniciarJuego);
+
+                // Event listener para comprobar respuesta con Enter
+                document
+                    .getElementById("inputRespuesta")
+                    .addEventListener("keydown", comprobarRespuesta);
+
+                // Event listener para mantener el foco cuando se pierda
+                document
+                    .getElementById("inputRespuesta")
+                    .addEventListener("blur", mantenerFoco);
+            };
+        </script>
+    </body>
+</html>
