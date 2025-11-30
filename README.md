@@ -4,13 +4,21 @@
 
 **¡Aprende matemáticas divirtiéndote!** Un juego interactivo diseñado para que los niños practiquen sumas básicas con sus personajes favoritos de Numberblocks.
 
-[![Jugar Ahora](https://img.shields.io/badge/🎮-Jugar_Ahora-ff3399?style=for-the-badge)](https://vtellez.github.io/sumanb/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub-Pages-blue?style=for-the-badge)](https://pages.github.com/)
+[![Jugar Ahora](https://img.shields.io/badge/🎮-Jugar_Ahora-ff3399?style=for-the-badge)](http://cuentaconnumberblocks.es/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub-Pages-blue?style=for-the-badge)](https://vtellez.github.io/sumanb/)
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/es/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/es/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/es/docs/Web/JavaScript)
 
 </div>
+
+## 🌐 Demo en Vivo
+
+[Ver video demo](video.mp4)
+
+¡Pruébalo ahora mismo! 👇
+
+🔗 **[http://cuentaconnumberblocks.es/](http://cuentaconnumberblocks.es/)**
 
 ## ✨ Características Principales
 
@@ -47,18 +55,6 @@
 - **Estilos**: CSS puro con animaciones y gradientes
 - **Audio**: Formatos WAV para compatibilidad
 - **Hosting**: GitHub Pages
-
-
-## 🌐 Demo en Vivo
-
-¡Pruébalo ahora mismo! 👇
-
-🔗 **[https://vtellez.github.io/sumanb/](https://vtellez.github.io/sumanb/)**
-
-<video width="600" controls>
-  <source src="video.mp4" type="video/mp4">
-  Tu navegador no soporta el elemento video.
-</video>
 
 
 ## 👨‍👩‍👧‍👦 Para Padres y Educadores

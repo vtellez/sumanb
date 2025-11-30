@@ -821,7 +821,11 @@
                         respuestaElement.className = "response active fail";
                         playAudio("error.wav");
                         inputElement.value = "";
-                        enviandoRespuesta = false;
+                        // Restaurar foco inmediatamente
+                        setTimeout(() => {
+                            inputElement.focus();
+                            enviandoRespuesta = false;
+                        }, 100);
                         return;
                     }
 
@@ -841,8 +845,9 @@
                         respuestaElement.className = "response active fail";
                         playAudio("error.wav");
                         inputElement.value = "";
-                        // Reactivar después de un breve delay
+                        // Restaurar foco y reactivar después de un breve delay
                         setTimeout(() => {
+                            inputElement.focus();
                             enviandoRespuesta = false;
                         }, 500);
                     }
@@ -856,7 +861,10 @@
                 // Forzar reflow para que la animación funcione correctamente
                 respuestaElement.offsetHeight;
                 generarNumeros();
-                document.getElementById("inputRespuesta").focus();
+                // Asegurar que el foco se mantenga
+                setTimeout(() => {
+                    document.getElementById("inputRespuesta").focus();
+                }, 100);
             }
 
             // Función para crear confeti
