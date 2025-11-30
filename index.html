@@ -197,6 +197,37 @@
                 transform: scale(1.02);
             }
 
+            .mobile-submit {
+                display: none;
+                background: linear-gradient(135deg, #ff3399, #ffcc00);
+                color: white;
+                border: none;
+                padding: 20px 50px;
+                font-size: 2rem;
+                border-radius: 50px;
+                cursor: pointer;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                transition: all 0.3s;
+                position: relative;
+                z-index: 1;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                width: 80%;
+                max-width: 400px;
+                margin: auto;
+                margin-top: 20px;
+            }
+
+            .mobile-submit:hover {
+                transform: scale(1.1);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            }
+
+            .mobile-submit:active {
+                transform: scale(0.95);
+            }
+
             .response {
                 font-size: 2rem;
                 margin-top: 20px;
@@ -464,6 +495,14 @@
                     padding: 15px;
                 }
 
+                .mobile-submit {
+                    display: block;
+                    padding: 15px 30px;
+                    font-size: 1.5rem;
+                    width: 80%;
+                    max-width: 400px;
+                }
+
                 .response {
                     font-size: 1.5rem;
                     padding: 15px;
@@ -576,6 +615,10 @@
                     placeholder="Tu respuesta"
                     autofocus
                 />
+                <!-- Botón submit solo para móviles -->
+                <button class="mobile-submit" id="mobileSubmit">
+                    ✅ Comprobar
+                </button>
             </div>
 
             <div class="response" id="respuesta"></div>
@@ -584,6 +627,7 @@
         <script>
             var respuestaCorrecta;
             var num1, num2;
+            var enviandoRespuesta = false;
 
             // Función para reproducir audio y devolver una promesa
             function playAudio(filename) {
@@ -732,14 +776,15 @@
             }
 
             function comprobarRespuesta(event) {
-                if (
-                    event.key === "Enter" ||
-                    event.type === "change" ||
-                    event.keyCode === 13 ||
-                    event.which === 13
-                ) {
-                    event.preventDefault(); // Prevenir comportamiento por defecto
-                    event.stopPropagation(); // Evitar que el evento se propague
+                // Prevenir envíos múltiples
+                if (enviandoRespuesta) return;
+
+                // Solo procesar si es Enter o viene del botón móvil
+                if (event.key === "Enter" || event.type === "click") {
+                    enviandoRespuesta = true;
+
+                    event.preventDefault();
+                    event.stopPropagation();
 
                     var inputElement =
                         document.getElementById("inputRespuesta");
@@ -763,6 +808,7 @@
                         respuestaElement.className = "response active fail";
                         playAudio("error.wav");
                         inputElement.value = "";
+                        enviandoRespuesta = false;
                         return;
                     }
 
@@ -774,14 +820,19 @@
                         createConfetti();
                         setTimeout(function () {
                             reiniciarJuego();
+                            enviandoRespuesta = false;
                         }, 2000);
                     } else {
                         respuestaElement.innerHTML =
                             "Respuesta incorrecta. Inténtalo de nuevo.";
                         respuestaElement.className = "response active fail";
                         playAudio("error.wav");
+                        inputElement.value = "";
+                        // Reactivar después de un breve delay
+                        setTimeout(() => {
+                            enviandoRespuesta = false;
+                        }, 500);
                     }
-                    inputElement.value = "";
                 }
             }
 
@@ -868,6 +919,11 @@
                 document
                     .getElementById("inputRespuesta")
                     .addEventListener("keydown", comprobarRespuesta);
+
+                // Event listener para el botón móvil
+                document
+                    .getElementById("mobileSubmit")
+                    .addEventListener("click", comprobarRespuesta);
 
                 // Event listener para mantener el foco cuando se pierda
                 document
