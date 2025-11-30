@@ -727,30 +727,16 @@
                     event.preventDefault();
                     return false;
                 }
-
-                // Bloquear todas las combinaciones con Ctrl, Alt, Shift, Meta
-                if (
-                    event.ctrlKey ||
-                    event.altKey ||
-                    event.shiftKey ||
-                    event.metaKey
-                ) {
-                    event.preventDefault();
-                    return false;
-                }
-
                 // Bloquear teclas de función (F1-F12)
                 if (event.key.startsWith("F") && event.key.length > 1) {
                     event.preventDefault();
                     return false;
                 }
-
                 // Bloquear letras (a-z, A-Z)
                 if (event.key.length === 1 && event.key.match(/[a-z]/i)) {
                     event.preventDefault();
                     return false;
                 }
-
                 // Permitir cualquier otra tecla no bloqueada
                 return true;
             }
