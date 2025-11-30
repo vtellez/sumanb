@@ -722,58 +722,70 @@
 
             // Función para validar teclas permitidas
             function validarTecla(event) {
-                // Teclas permitidas:
-                // - Números (0-9)
-                // - Flechas (ArrowUp, ArrowDown, ArrowLeft, ArrowRight)
-                // - Teclas de control (Backspace, Delete, Enter, Tab, Escape)
-                // - Teclas de navegación (Home, End)
-                const teclasPermitidas = [
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7",
-                    "8",
-                    "9",
-                    "ArrowUp",
-                    "ArrowDown",
-                    "ArrowLeft",
-                    "ArrowRight",
-                    "Backspace",
-                    "Delete",
-                    "Enter",
-                    "Tab",
-                    "Escape",
-                    "Home",
-                    "End",
-                ];
-
-                // Permitir combinaciones con Ctrl (Ctrl+A, Ctrl+C, Ctrl+V, etc.)
-                if (event.ctrlKey || event.metaKey) {
-                    return true;
+                // Permitir siempre las teclas de control esenciales
+                if (event.key === "Enter") {
+                    return true; // Siempre permitir Enter para enviar
                 }
 
-                // Permitir teclas de función (F1-F12)
-                if (event.key.startsWith("F") && event.key.length > 1) {
-                    return true;
-                }
-
-                // Bloquear el tabulador específicamente
+                // Bloquear el tabulador
                 if (event.key === "Tab") {
                     event.preventDefault();
                     return false;
                 }
 
-                // Si la tecla no está en la lista permitida, bloquearla
-                if (!teclasPermitidas.includes(event.key)) {
+                // Bloquear todas las combinaciones con Ctrl, Alt, Shift, Meta
+                if (
+                    event.ctrlKey ||
+                    event.altKey ||
+                    event.shiftKey ||
+                    event.metaKey
+                ) {
                     event.preventDefault();
                     return false;
                 }
 
-                return true;
+                // Bloquear teclas de función (F1-F12)
+                if (event.key.startsWith("F") && event.key.length > 1) {
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Bloquear letras (a-z, A-Z)
+                if (event.key.length === 1 && event.key.match(/[a-z]/i)) {
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Bloquear símbolos y caracteres especiales
+                if (event.key.length === 1 && !event.key.match(/[0-9]/)) {
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Permitir teclas de navegación y control básicas
+                const teclasPermitidas = [
+                    "Backspace",
+                    "Delete",
+                    "ArrowUp",
+                    "ArrowDown",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "Home",
+                    "End",
+                ];
+
+                if (teclasPermitidas.includes(event.key)) {
+                    return true;
+                }
+
+                // Permitir números (0-9)
+                if (event.key >= "0" && event.key <= "9") {
+                    return true;
+                }
+
+                // Bloquear cualquier otra tecla no contemplada
+                event.preventDefault();
+                return false;
             }
 
             function comprobarRespuesta(event) {
