@@ -19,16 +19,16 @@
 
             body {
                 font-family: "Comic Neue", cursive;
-                font-weight: 400; /* Peso normal */
+                font-weight: 400;
                 font-size: 16px;
                 line-height: 1.5;
-            }
-            /* Aplica a todo el body con peso normal */
-            body {
-                font-family: "Comic Neue", cursive;
-                font-weight: 400; /* Explícitamente normal */
-                font-size: 16px;
-                line-height: 1.5;
+                background: linear-gradient(135deg, #6bcaff, #ff6be1);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+                overflow-x: hidden;
             }
 
             /* Títulos con peso bold */
@@ -39,14 +39,14 @@
             h5,
             h6 {
                 font-family: "Comic Neue", cursive;
-                font-weight: 700; /* Explícitamente bold */
+                font-weight: 700;
             }
 
             /* Botones también en bold */
             button,
             .boton {
                 font-family: "Comic Neue", cursive;
-                font-weight: 700; /* Explícitamente bold */
+                font-weight: 700;
             }
 
             /* Elementos que deben ser bold */
@@ -57,62 +57,6 @@
                 font-weight: 700;
             }
 
-            /* Responsive para móviles */
-            @media (max-width: 768px) {
-                body {
-                    font-size: 15px;
-                    line-height: 1.4;
-                }
-
-                h1 {
-                    font-size: 1.8rem;
-                }
-                h2 {
-                    font-size: 1.5rem;
-                }
-                h3 {
-                    font-size: 1.3rem;
-                }
-
-                button,
-                .boton {
-                    font-size: 16px;
-                    min-height: 44px;
-                    padding: 12px 20px;
-                }
-
-                .container {
-                    padding: 0px !important;
-                }
-                .numbers,
-                .author {
-                    display: none;
-                }
-                .modal-instructions {
-                    line-height: 1.3em !important;
-                    font-size: 1.1rem !important;
-                    padding: 10px !important;
-                }
-                .start-button,
-                .modal-content {
-                    padding: 20px !important;
-                }
-                .numbers-display {
-                    box-shadow: none !important;
-                    margin: 0px auto !important;
-                }
-            }
-
-            body {
-                background: linear-gradient(135deg, #6bcaff, #ff6be1);
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                padding: 20px;
-                overflow-x: hidden;
-            }
-
             .numberblock-label {
                 display: none;
             }
@@ -121,39 +65,66 @@
                 max-width: 900px;
                 width: 100%;
                 text-align: center;
-                background-color: rgba(255, 255, 255, 0.95);
+                background: linear-gradient(135deg, #ff6be1, #6bcaff);
                 padding: 30px;
-                border-radius: 25px;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                border-radius: 30px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .container::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(
+                    45deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.1),
+                    transparent
+                );
+                transform: rotate(45deg);
+                animation: shine 3s infinite;
             }
 
             h1 {
-                color: #ff3399;
-                text-shadow: 3px 3px 0 #ffcc00;
+                color: white;
+                text-shadow: 4px 4px 0 #ff3399, 8px 8px 0 rgba(0, 0, 0, 0.2);
                 font-size: 3rem;
                 margin-bottom: 10px;
+                position: relative;
+                z-index: 1;
             }
 
             .author {
-                color: #666;
-                font-size: 1.2rem;
+                color: white;
+                font-size: 1.4rem;
                 margin-bottom: 30px;
+                text-shadow: 2px 2px 0 #ff3399;
+                position: relative;
+                z-index: 1;
             }
 
             .numbers-display {
                 margin: 30px auto;
                 width: 90%;
                 min-height: 200px;
-                border-radius: 20px;
+                border-radius: 25px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                background: #fff;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+                background: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
                 transition: all 0.3s ease;
                 animation: pulse 2s infinite;
-                padding-bottom: 20px;
+                padding: 0px;
+                padding-bottom: 30px;
+                position: relative;
+                z-index: 1;
             }
 
             .numbers {
@@ -202,6 +173,8 @@
 
             .input-container {
                 margin: 30px 0;
+                position: relative;
+                z-index: 1;
             }
 
             input {
@@ -213,13 +186,15 @@
                 border-radius: 20px;
                 text-align: center;
                 outline: none;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
                 transition: all 0.3s;
+                background: white;
             }
 
             input:focus {
                 border-color: #ffcc00;
-                box-shadow: 0 5px 20px rgba(255, 204, 0, 0.5);
+                box-shadow: 0 10px 30px rgba(255, 204, 0, 0.5);
+                transform: scale(1.02);
             }
 
             .response {
@@ -229,32 +204,34 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                padding: 10px;
-                border-radius: 15px;
+                padding: 20px;
+                border-radius: 20px;
                 transition: all 0.3s ease;
+                position: relative;
+                z-index: 1;
+                /* Fondo transparente por defecto */
+                background: transparent;
+                color: transparent;
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            .response.active {
+                opacity: 1;
+                transform: scale(1);
             }
 
             .success {
-                color: #2ecc71;
-                background-color: rgba(46, 204, 113, 0.2);
+                background: rgba(46, 204, 113, 0.95) !important;
+                color: white !important;
+                box-shadow: 0 10px 25px rgba(46, 204, 113, 0.3);
                 animation: bounce 0.5s;
             }
 
             .fail {
-                color: #e74c3c;
-                background-color: rgba(231, 76, 60, 0.2);
-            }
-
-            .instructions {
-                background-color: rgba(255, 255, 255, 0.8);
-                padding: 15px;
-                border-radius: 15px;
-                margin-top: 20px;
-                max-width: 500px;
-                font-size: 1.2rem;
-                color: #333;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-                line-height: 1.5;
+                background: rgba(231, 76, 60, 0.95) !important;
+                color: white !important;
+                box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
             }
 
             @keyframes pulse {
@@ -286,6 +263,7 @@
                 background-color: #f00;
                 opacity: 0.7;
                 animation: fall linear forwards;
+                z-index: 1000;
             }
 
             @keyframes fall {
@@ -293,16 +271,6 @@
                     transform: translateY(100vh) rotate(360deg);
                     opacity: 0;
                 }
-            }
-
-            .numberblock-label {
-                font-size: 1.5rem;
-                font-weight: bold;
-                color: #333;
-                margin-top: 10px;
-                background-color: rgba(255, 255, 255, 0.7);
-                padding: 5px 10px;
-                border-radius: 10px;
             }
 
             /* Estilos para el modal */
@@ -456,7 +424,31 @@
                 }
             }
 
+            /* Responsive para móviles */
             @media (max-width: 768px) {
+                body {
+                    padding: 10px;
+                    font-size: 15px;
+                    line-height: 1.4;
+                }
+
+                .container {
+                    padding: 20px !important;
+                    border-radius: 20px;
+                }
+
+                h1 {
+                    font-size: 2.5rem;
+                }
+
+                .author {
+                    font-size: 1.2rem;
+                }
+
+                .numbers {
+                    font-size: 4rem;
+                }
+
                 .numberblock-img {
                     width: 80px;
                 }
@@ -467,12 +459,37 @@
                     margin: 0 10px;
                 }
 
-                .numbers {
-                    font-size: 4rem;
+                input {
+                    font-size: 1.5rem;
+                    padding: 15px;
                 }
 
-                h1 {
-                    font-size: 2.5rem;
+                .response {
+                    font-size: 1.5rem;
+                    padding: 15px;
+                    min-height: 50px;
+                }
+
+                .numbers,
+                .author {
+                    display: none;
+                }
+
+                .modal-instructions {
+                    line-height: 1.3em !important;
+                    font-size: 1.1rem !important;
+                    padding: 10px !important;
+                }
+
+                .start-button,
+                .modal-content {
+                    padding: 20px !important;
+                }
+
+                .numbers-display {
+                    box-shadow: none !important;
+                    margin: 0px auto !important;
+                    padding: 20px 10px;
                 }
 
                 .modal-title {
@@ -776,11 +793,14 @@
                         respuestaCorrecta
                     );
 
+                    // Primero activar el contenedor de respuesta
+                    respuestaElement.classList.add("active");
+
                     // Verificar si la respuesta es un número válido
                     if (isNaN(respuestaUsuario)) {
                         respuestaElement.innerHTML =
                             "Por favor, escribe un número";
-                        respuestaElement.className = "response fail";
+                        respuestaElement.className = "response active fail";
                         playAudio("error.wav");
                         inputElement.value = "";
                         return;
@@ -789,22 +809,16 @@
                     if (respuestaUsuario === respuestaCorrecta) {
                         respuestaElement.innerHTML =
                             "¡Correcto! ¡Eres un genio de las matemáticas!";
-                        respuestaElement.className = "response success";
-
-                        // Reproducir audio de éxito
+                        respuestaElement.className = "response active success";
                         playAudio("ok.wav");
-
                         createConfetti();
-
                         setTimeout(function () {
                             reiniciarJuego();
                         }, 2000);
                     } else {
                         respuestaElement.innerHTML =
                             "Respuesta incorrecta. Inténtalo de nuevo.";
-                        respuestaElement.className = "response fail";
-
-                        // Reproducir audio de error
+                        respuestaElement.className = "response active fail";
                         playAudio("error.wav");
                     }
                     inputElement.value = "";
@@ -812,8 +826,9 @@
             }
 
             function reiniciarJuego() {
-                document.getElementById("respuesta").innerHTML = "";
-                document.getElementById("respuesta").className = "response";
+                var respuestaElement = document.getElementById("respuesta");
+                respuestaElement.innerHTML = "";
+                respuestaElement.className = "response"; // Quitar todas las clases
                 generarNumeros();
                 document.getElementById("inputRespuesta").focus();
             }
