@@ -722,11 +722,6 @@
 
             // Función para validar teclas permitidas
             function validarTecla(event) {
-                // Permitir siempre las teclas de control esenciales
-                if (event.key === "Enter") {
-                    return true; // Siempre permitir Enter para enviar
-                }
-
                 // Bloquear el tabulador
                 if (event.key === "Tab") {
                     event.preventDefault();
@@ -756,36 +751,8 @@
                     return false;
                 }
 
-                // Bloquear símbolos y caracteres especiales
-                if (event.key.length === 1 && !event.key.match(/[0-9]/)) {
-                    event.preventDefault();
-                    return false;
-                }
-
-                // Permitir teclas de navegación y control básicas
-                const teclasPermitidas = [
-                    "Backspace",
-                    "Delete",
-                    "ArrowUp",
-                    "ArrowDown",
-                    "ArrowLeft",
-                    "ArrowRight",
-                    "Home",
-                    "End",
-                ];
-
-                if (teclasPermitidas.includes(event.key)) {
-                    return true;
-                }
-
-                // Permitir números (0-9)
-                if (event.key >= "0" && event.key <= "9") {
-                    return true;
-                }
-
-                // Bloquear cualquier otra tecla no contemplada
-                event.preventDefault();
-                return false;
+                // Permitir cualquier otra tecla no bloqueada
+                return true;
             }
 
             function comprobarRespuesta(event) {
