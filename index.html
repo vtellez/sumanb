@@ -811,6 +811,12 @@
                         respuestaCorrecta
                     );
 
+                    // Guardar el valor antes de limpiar (para debug)
+                    var valorOriginal = inputElement.value;
+
+                    // LIMPIAR EL INPUT SIEMPRE - tanto en móvil como desktop
+                    inputElement.value = "";
+
                     // Primero activar el contenedor de respuesta
                     respuestaElement.classList.add("active");
 
@@ -820,8 +826,8 @@
                             "Por favor, escribe un número";
                         respuestaElement.className = "response active fail";
                         playAudio("error.wav");
-                        inputElement.value = "";
-                        // Restaurar foco inmediatamente
+
+                        // En móvil, restaurar foco inmediatamente
                         setTimeout(() => {
                             inputElement.focus();
                             enviandoRespuesta = false;
@@ -844,8 +850,8 @@
                             "Respuesta incorrecta. Inténtalo de nuevo.";
                         respuestaElement.className = "response active fail";
                         playAudio("error.wav");
-                        inputElement.value = "";
-                        // Restaurar foco y reactivar después de un breve delay
+
+                        // En móvil, restaurar foco inmediatamente después del error
                         setTimeout(() => {
                             inputElement.focus();
                             enviandoRespuesta = false;
@@ -861,10 +867,48 @@
                 // Forzar reflow para que la animación funcione correctamente
                 respuestaElement.offsetHeight;
                 generarNumeros();
-                // Asegurar que el foco se mantenga
+
+                // En móvil, asegurar que el foco se mantenga con un delay mayor
                 setTimeout(() => {
-                    document.getElementById("inputRespuesta").focus();
+                    var inputElement =
+                        document.getElementById("inputRespuesta");
+                    inputElement.focus();
+                    // Forzar el teclado a abrirse en móvil
+                    if (window.innerWidth <= 768) {
+                        inputElement.setAttribute("autofocus", "");
+                        setTimeout(() => {
+                            inputElement.focus();
+                        }, 300);
+                    }
                 }, 100);
+            }
+
+            // Función específica para el botón móvil que maneja mejor el foco
+            function manejarBotonMovil(event) {
+                event.preventDefault();
+
+                // Guardar el foco antes de que se pierda
+                var inputElement = document.getElementById("inputRespuesta");
+                var valor = inputElement.value;
+
+                // Limpiar el input inmediatamente
+                inputElement.value = "";
+
+                // Crear un evento simulado para comprobarRespuesta
+                var eventoSimulado = {
+                    type: "click",
+                    key: "Enter",
+                    preventDefault: function () {},
+                    stopPropagation: function () {},
+                };
+
+                // Llamar a la función de comprobación
+                comprobarRespuesta(eventoSimulado);
+
+                // Enfocar inmediatamente después de un breve delay
+                setTimeout(() => {
+                    inputElement.focus();
+                }, 50);
             }
 
             // Función para crear confeti
@@ -911,10 +955,16 @@
             // Función para mantener el foco en el input
             function mantenerFoco() {
                 const inputElement = document.getElementById("inputRespuesta");
-                // Usamos setTimeout para evitar conflictos con otros eventos
-                setTimeout(() => {
-                    inputElement.focus();
-                }, 10);
+                // En móvil, ser más persistente con el foco
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        inputElement.focus();
+                    }, 100);
+                } else {
+                    setTimeout(() => {
+                        inputElement.focus();
+                    }, 10);
+                }
             }
 
             // Función para iniciar el juego
@@ -924,7 +974,15 @@
                     .getElementById("gameContainer")
                     .classList.remove("hidden");
                 generarNumeros();
-                document.getElementById("inputRespuesta").focus();
+
+                // En móvil, forzar el foco con más delay
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        document.getElementById("inputRespuesta").focus();
+                    }, 300);
+                } else {
+                    document.getElementById("inputRespuesta").focus();
+                }
             }
 
             window.onload = function () {
@@ -943,10 +1001,10 @@
                     .getElementById("inputRespuesta")
                     .addEventListener("keydown", comprobarRespuesta);
 
-                // Event listener para el botón móvil
+                // Event listener ESPECÍFICO para el botón móvil que maneja mejor el foco
                 document
                     .getElementById("mobileSubmit")
-                    .addEventListener("click", comprobarRespuesta);
+                    .addEventListener("click", manejarBotonMovil);
 
                 // Event listener para mantener el foco cuando se pierda
                 document
