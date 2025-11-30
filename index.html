@@ -17,15 +17,35 @@
             }
 
             body {
-                font-family: "Comic Neue", cursive;
-                font-weight: 400;
+                font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE",
+                    cursive;
+                font-size: 16px;
+                line-height: 1.5;
+                -webkit-font-smoothing: antialiased;
             }
 
+            /* Responsive para móviles */
             @media (max-width: 768px) {
                 body {
-                    font-family: "Comic Neue", cursive;
                     font-size: 15px;
                     line-height: 1.4;
+                }
+
+                h1 {
+                    font-size: 1.8rem;
+                }
+                h2 {
+                    font-size: 1.5rem;
+                }
+                h3 {
+                    font-size: 1.3rem;
+                }
+
+                button,
+                .boton {
+                    font-size: 16px;
+                    min-height: 44px;
+                    padding: 12px 20px;
                 }
             }
 
