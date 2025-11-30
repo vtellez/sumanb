@@ -173,6 +173,7 @@
 
             .input-container {
                 margin: 30px 0;
+                margin-bottom: 10px;
                 position: relative;
                 z-index: 1;
             }
@@ -230,12 +231,13 @@
 
             .response {
                 font-size: 2rem;
-                margin-top: 20px;
-                min-height: 60px;
+                margin-top: 10px;
+                min-height: 0;
+                height: 0;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                padding: 20px;
+                padding: 0 20px;
                 border-radius: 20px;
                 transition: all 0.3s ease;
                 position: relative;
@@ -245,11 +247,16 @@
                 color: transparent;
                 opacity: 0;
                 transform: scale(0.8);
+                overflow: hidden;
             }
 
             .response.active {
                 opacity: 1;
                 transform: scale(1);
+                min-height: 60px;
+                height: auto;
+                padding: 20px;
+                margin-top: 20px;
             }
 
             .success {
@@ -505,8 +512,14 @@
 
                 .response {
                     font-size: 1.5rem;
-                    padding: 15px;
+                    padding: 0 15px;
+                    margin-top: 5px;
+                }
+
+                .response.active {
                     min-height: 50px;
+                    padding: 15px;
+                    margin-top: 15px;
                 }
 
                 .numbers,
@@ -840,6 +853,8 @@
                 var respuestaElement = document.getElementById("respuesta");
                 respuestaElement.innerHTML = "";
                 respuestaElement.className = "response"; // Quitar todas las clases
+                // Forzar reflow para que la animación funcione correctamente
+                respuestaElement.offsetHeight;
                 generarNumeros();
                 document.getElementById("inputRespuesta").focus();
             }

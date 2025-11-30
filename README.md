@@ -55,6 +55,12 @@
 
 🔗 **[https://vtellez.github.io/sumanb/](https://vtellez.github.io/sumanb/)**
 
+<video width="600" controls>
+  <source src="video.mp4" type="video/mp4">
+  Tu navegador no soporta el elemento video.
+</video>
+
+
 ## 👨‍👩‍👧‍👦 Para Padres y Educadores
 
 Este juego está diseñado específicamente para:
