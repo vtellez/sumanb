@@ -22,6 +22,10 @@
                 overflow-x: hidden;
             }
 
+            .numberblock-label {
+                display: none;
+            }
+
             .container {
                 max-width: 900px;
                 width: 100%;
@@ -30,9 +34,6 @@
                 padding: 30px;
                 border-radius: 25px;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            }
-            .numberblock-label {
-                display: none;
             }
 
             h1 {
@@ -411,7 +412,7 @@
 
                 <div class="numberblocks-preview">
                     <img
-                        src="numimages/5.png"
+                        src="./numimages/5.png"
                         alt="Numberblock 5"
                         class="preview-block"
                     />
@@ -419,7 +420,7 @@
                         >+</span
                     >
                     <img
-                        src="numimages/3.png"
+                        src="./numimages/3.png"
                         alt="Numberblock 3"
                         class="preview-block"
                     />
@@ -427,7 +428,7 @@
                         >=</span
                     >
                     <img
-                        src="numimages/8.png"
+                        src="./numimages/8.png"
                         alt="Numberblock 8"
                         class="preview-block"
                     />
@@ -478,20 +479,26 @@
             // Función para reproducir audio y devolver una promesa
             function playAudio(filename) {
                 return new Promise((resolve, reject) => {
-                    const audio = new Audio(`audio/${filename}`);
+                    // Usar ruta relativa para GitHub Pages
+                    const audioPath = `./audio/${filename}`;
+                    const audio = new Audio(audioPath);
 
                     audio.addEventListener("ended", () => {
                         resolve();
                     });
 
                     audio.addEventListener("error", (e) => {
-                        console.log("Error reproduciendo audio:", e);
-                        reject(e);
+                        console.log(`Error cargando audio: ${audioPath}`, e);
+                        // No rechazar, solo resolver para que el juego continúe
+                        resolve();
                     });
 
                     audio.play().catch((e) => {
-                        console.log("Error reproduciendo audio:", e);
-                        reject(e);
+                        console.log(
+                            `Error reproduciendo audio: ${audioPath}`,
+                            e
+                        );
+                        resolve(); // Continuar aunque falle el audio
                     });
                 });
             }
@@ -569,8 +576,30 @@
 
                 const img = document.createElement("img");
                 img.className = "numberblock-img";
-                img.src = `numimages/${num}.png`;
+                // Usar ruta relativa para GitHub Pages
+                img.src = `./numimages/${num}.png`;
                 img.alt = `Numberblock ${num}`;
+
+                // Añadir manejo de error para imágenes
+                img.onerror = function () {
+                    console.log(
+                        `Error cargando imagen: ./numimages/${num}.png`
+                    );
+                    // Crear un fallback visual
+                    const fallback = document.createElement("div");
+                    fallback.style.width = "120px";
+                    fallback.style.height = "120px";
+                    fallback.style.backgroundColor = "#ff3399";
+                    fallback.style.borderRadius = "20px";
+                    fallback.style.display = "flex";
+                    fallback.style.justifyContent = "center";
+                    fallback.style.alignItems = "center";
+                    fallback.style.fontSize = "3rem";
+                    fallback.style.color = "white";
+                    fallback.style.fontWeight = "bold";
+                    fallback.textContent = num;
+                    container.appendChild(fallback);
+                };
 
                 const label = document.createElement("div");
                 label.className = "numberblock-label";
