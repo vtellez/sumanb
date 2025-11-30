@@ -799,6 +799,20 @@
                 ) {
                     enviandoRespuesta = true;
 
+                    // SOLO llamar preventDefault/stopPropagation si el evento los tiene
+                    if (
+                        event.preventDefault &&
+                        typeof event.preventDefault === "function"
+                    ) {
+                        event.preventDefault();
+                    }
+                    if (
+                        event.stopPropagation &&
+                        typeof event.stopPropagation === "function"
+                    ) {
+                        event.stopPropagation();
+                    }
+
                     var inputElement =
                         document.getElementById("inputRespuesta");
                     var respuestaUsuario = parseInt(inputElement.value);
