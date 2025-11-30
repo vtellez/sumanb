@@ -22,10 +22,6 @@
                 overflow-x: hidden;
             }
 
-            .numberblock-label {
-                display: none;
-            }
-
             .container {
                 max-width: 900px;
                 width: 100%;
@@ -34,6 +30,9 @@
                 padding: 30px;
                 border-radius: 25px;
                 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            }
+            .numberblock-label {
+                display: none;
             }
 
             h1 {
@@ -583,6 +582,62 @@
                 return container;
             }
 
+            // Función para validar teclas permitidas
+            function validarTecla(event) {
+                // Teclas permitidas:
+                // - Números (0-9)
+                // - Flechas (ArrowUp, ArrowDown, ArrowLeft, ArrowRight)
+                // - Teclas de control (Backspace, Delete, Enter, Tab, Escape)
+                // - Teclas de navegación (Home, End)
+                const teclasPermitidas = [
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "ArrowUp",
+                    "ArrowDown",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "Backspace",
+                    "Delete",
+                    "Enter",
+                    "Tab",
+                    "Escape",
+                    "Home",
+                    "End",
+                ];
+
+                // Permitir combinaciones con Ctrl (Ctrl+A, Ctrl+C, Ctrl+V, etc.)
+                if (event.ctrlKey || event.metaKey) {
+                    return true;
+                }
+
+                // Permitir teclas de función (F1-F12)
+                if (event.key.startsWith("F") && event.key.length > 1) {
+                    return true;
+                }
+
+                // Bloquear el tabulador específicamente
+                if (event.key === "Tab") {
+                    event.preventDefault();
+                    return false;
+                }
+
+                // Si la tecla no está en la lista permitida, bloquearla
+                if (!teclasPermitidas.includes(event.key)) {
+                    event.preventDefault();
+                    return false;
+                }
+
+                return true;
+            }
+
             function comprobarRespuesta(event) {
                 if (event.key === "Enter") {
                     event.preventDefault(); // Prevenir comportamiento por defecto
@@ -707,6 +762,11 @@
                 document
                     .getElementById("startGameButton")
                     .addEventListener("click", iniciarJuego);
+
+                // Event listener para validar teclas
+                document
+                    .getElementById("inputRespuesta")
+                    .addEventListener("keydown", validarTecla);
 
                 // Event listener para comprobar respuesta con Enter
                 document
