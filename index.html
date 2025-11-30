@@ -4,8 +4,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Sumas con Numberblocks</title>
+        <!-- Comic Neue de Google Fonts -->
         <link
-            href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap"
             rel="stylesheet"
         />
         <style>
@@ -13,15 +14,47 @@
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
-                font-family: "Comic Sans MS", cursive, sans-serif;
+                font-family: "Comic Neue", cursive, sans-serif;
             }
 
             body {
-                font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE",
-                    cursive;
+                font-family: "Comic Neue", cursive;
+                font-weight: 400; /* Peso normal */
                 font-size: 16px;
                 line-height: 1.5;
-                -webkit-font-smoothing: antialiased;
+            }
+            /* Aplica a todo el body con peso normal */
+            body {
+                font-family: "Comic Neue", cursive;
+                font-weight: 400; /* Explícitamente normal */
+                font-size: 16px;
+                line-height: 1.5;
+            }
+
+            /* Títulos con peso bold */
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-family: "Comic Neue", cursive;
+                font-weight: 700; /* Explícitamente bold */
+            }
+
+            /* Botones también en bold */
+            button,
+            .boton {
+                font-family: "Comic Neue", cursive;
+                font-weight: 700; /* Explícitamente bold */
+            }
+
+            /* Elementos que deben ser bold */
+            .negrita,
+            strong,
+            b {
+                font-family: "Comic Neue", cursive;
+                font-weight: 700;
             }
 
             /* Responsive para móviles */
@@ -51,7 +84,8 @@
                 .container {
                     padding: 0px !important;
                 }
-                .numbers {
+                .numbers,
+                .author {
                     display: none;
                 }
             }
