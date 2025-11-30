@@ -27,7 +27,7 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                padding: 20px;
+                padding: 0px;
                 overflow-x: hidden;
             }
 
@@ -62,15 +62,15 @@
             }
 
             .container {
-                max-width: 900px;
                 width: 100%;
                 text-align: center;
                 background: linear-gradient(135deg, #ff6be1, #6bcaff);
                 padding: 30px;
-                border-radius: 30px;
+                border-radius: 0px;
                 box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
                 position: relative;
                 overflow: hidden;
+                height: 100vh;
             }
 
             .container::before {
@@ -109,6 +109,7 @@
             }
 
             .numbers-display {
+                max-width: 750px;
                 margin: 30px auto;
                 width: 90%;
                 min-height: 200px;
@@ -465,14 +466,12 @@
             /* Responsive para móviles */
             @media (max-width: 768px) {
                 body {
-                    padding: 10px;
                     font-size: 15px;
                     line-height: 1.4;
                 }
 
                 .container {
-                    padding: 20px !important;
-                    border-radius: 20px;
+                    padding: 5px;
                 }
 
                 h1 {
@@ -792,8 +791,12 @@
                 // Prevenir envíos múltiples
                 if (enviandoRespuesta) return;
 
-                // Solo procesar si es Enter o viene del botón móvil
-                if (event.key === "Enter" || event.type === "click") {
+                // Solo procesar si es Enter, blur o viene del botón móvil
+                if (
+                    event.key === "Enter" ||
+                    event.type === "click" ||
+                    event.type === "blur"
+                ) {
                     enviandoRespuesta = true;
 
                     event.preventDefault();
@@ -882,11 +885,7 @@
             function manejarBotonMovil(event) {
                 event.preventDefault();
 
-                // Obtener el valor ANTES de procesar
-                var inputElement = document.getElementById("inputRespuesta");
-
                 // Simplemente llamar a la función original de comprobación
-                // pero forzando el tipo de evento a 'click'
                 var eventoSimulado = {
                     type: "click",
                     key: "Enter",
@@ -895,6 +894,26 @@
                 };
 
                 comprobarRespuesta(eventoSimulado);
+            }
+
+            // Función específica para cuando pierde el foco
+            function enviarAlPerderFoco(event) {
+                var inputElement = document.getElementById("inputRespuesta");
+                // Solo enviar si hay un valor escrito y no estamos ya enviando
+                if (inputElement.value.trim() !== "" && !enviandoRespuesta) {
+                    comprobarRespuesta({ type: "blur", key: "Enter" });
+                }
+            }
+
+            // Función para mantener el foco en el input (solo cuando está vacío)
+            function mantenerFoco() {
+                const inputElement = document.getElementById("inputRespuesta");
+                // Solo mantener el foco si el input está vacío
+                if (inputElement.value.trim() === "") {
+                    setTimeout(() => {
+                        inputElement.focus();
+                    }, 10);
+                }
             }
 
             // Función para crear confeti
@@ -938,14 +957,6 @@
                 }
             }
 
-            // Función para mantener el foco en el input
-            function mantenerFoco() {
-                const inputElement = document.getElementById("inputRespuesta");
-                setTimeout(() => {
-                    inputElement.focus();
-                }, 10);
-            }
-
             // Función para iniciar el juego
             function iniciarJuego() {
                 document.getElementById("startModal").classList.add("hidden");
@@ -972,12 +983,17 @@
                     .getElementById("inputRespuesta")
                     .addEventListener("keydown", comprobarRespuesta);
 
-                // Event listener para el botón móvil - usar la función simplificada
+                // Event listener para el botón móvil
                 document
                     .getElementById("mobileSubmit")
                     .addEventListener("click", manejarBotonMovil);
 
-                // Event listener para mantener el foco cuando se pierda
+                // Event listener para enviar automáticamente cuando pierde el foco
+                document
+                    .getElementById("inputRespuesta")
+                    .addEventListener("blur", enviarAlPerderFoco);
+
+                // Event listener para mantener el foco cuando se pierda (solo si está vacío)
                 document
                     .getElementById("inputRespuesta")
                     .addEventListener("blur", mantenerFoco);
