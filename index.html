@@ -799,9 +799,6 @@
                 ) {
                     enviandoRespuesta = true;
 
-                    event.preventDefault();
-                    event.stopPropagation();
-
                     var inputElement =
                         document.getElementById("inputRespuesta");
                     var respuestaUsuario = parseInt(inputElement.value);
@@ -885,15 +882,19 @@
             function manejarBotonMovil(event) {
                 event.preventDefault();
 
-                // Simplemente llamar a la función original de comprobación
-                var eventoSimulado = {
-                    type: "click",
+                // Crear un evento mejor que tenga todos los métodos necesarios
+                var fakeEvent = {
                     key: "Enter",
-                    preventDefault: function () {},
-                    stopPropagation: function () {},
+                    type: "click",
+                    preventDefault: function () {
+                        return false;
+                    },
+                    stopPropagation: function () {
+                        return false;
+                    },
                 };
 
-                comprobarRespuesta(eventoSimulado);
+                comprobarRespuesta(fakeEvent);
             }
 
             // Función específica para cuando pierde el foco
