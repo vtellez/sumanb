@@ -77,15 +77,6 @@ Puedes personalizar el juego fácilmente:
 - **Modificar imágenes**: Sustituye los PNG en `numimages/`
 - **Personalizar colores**: Edita los gradientes en el CSS
 
-## 🤝 Contribuir
-
-¿Tienes ideas para mejorar el juego? ¡Me encantaría escucharlas!
-
-1. Haz un fork del proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
 
 ## 👨‍💻 Autores
 
@@ -93,14 +84,8 @@ Puedes personalizar el juego fácilmente:
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está bajo la Licencia MIT
 
-## 🐛 Reportar Problemas
-
-Si encuentras algún error o tienes sugerencias:
-- Abre un [issue](https://github.com/vtellez/sumanb/issues) en GitHub
-- Describe el problema detalladamente
-- Incluye capturas de pantalla si es posible
 
 ---
 
